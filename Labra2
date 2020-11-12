@@ -1,0 +1,68 @@
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+#Tunnetut muuttujat:
+G = 6.67384*10**(-11) #gravitaatiovakio
+M = 5.9737*10**24 #maan massa
+Mk = 7.342*10**22 #kuun massa
+r = (6371*10**3)+(100*10**3) #raketin etäisyys maasta
+y = (384300*10**3) #raketin etäisyys kuusta
+t = 1 #aikaväli
+v = int(input("nopeus"))
+x=0 #alkupaikka
+z=0 #lentoaika
+
+tt = np.array([0])
+xt = np.array([0])
+
+while True:
+    dv=(-G*M/(r+x)**2)+(G*Mk/(y-x)**2)*t
+    v_k=v+dv/2
+    v=v+dv
+    x = x + v_k * t
+    z=z+t
+    if z%1000==0:
+        tt = np.append(tt, z)
+        xt = np.append(xt, x)
+    if x > y:
+        break
+    if v < 0:
+        break
+
+h = float(z/3600)
+
+print("paikka",x)
+print("nopeus",v)
+print("lentoaika",h)
+
+v_3 = float(1.1*10992)
+print(v_3)
+
+#Pienin lähtönopeus on 10992 m/s.
+
+xt0 = np.array([0])
+tt0 = np.array([0])
+
+x0 = 0
+t0 = 0
+v0 = 1.1*10992
+z0 = 0
+
+while True:
+    dv0=(-G*M/(r+x0)**2)+(G*Mk/(y-x0)**2)*t
+    v_k0=v0+dv0/2
+    v0=v0+dv0
+    x0 = x0 + v_k0 * t
+    z0=z0+t
+    if z%1000==0:
+        tt0 = np.append(tt0, z0)
+        xt0 = np.append(xt0, x0)
+    if x0 > y:
+        break
+    if v0 < 0:
+        break
+
+plt.plot(tt0,xt0)
+plt.plot(tt,xt)
+plt.show()
