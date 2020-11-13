@@ -1,0 +1,118 @@
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+#Tunnetut muuttujat alkutilanteessa ovat seuraavat:
+
+G = 6.67384*10**(-11) #Gravitaatiovakio.
+M_maa = 5.9737*10**24 #Maan massa.
+M_kuu = 7.342*10**22 #Kuun massa.
+R = (6371*10**3)+(100*10**3) #Raketin etäisyys maasta.
+y = (384300*10**3) #Raketin etäisyys kuusta.
+dt = 1 #Aikaväli sekuntteina, jota halutaan tarkastella.
+x = 0 #Raketin alkupaikka.
+t_l = 0 #Raketin lentoaika.
+v = int(input("Syötä raketille alkunopeus v (m/s): ")) #Raketin alkunopeus, jota halutaan tarkastella.
+
+#Newtonin II lain mukaan ∑F = ma = m*dv/dt, josta dv = F/m*dt.
+#∑F = (-G*M_maa/(R+x)**2) + (G*M_kuu)/(y-x)**2). 
+#Raketin nopeudeksi saadaan dv = (-G*M_maa)/(R+x)**2) + (G*M_kuu)/(y-x)**2))*dt.
+
+#1.
+
+#Tarkastellaan tilannetta, jossa raketin alkunopeus kuuhun on pienin mahdollinen.
+
+#Luodaan koordinaastitoakselit:
+    
+tt = np.array([0]) #Aika-akseli t (h).
+xt = np.array([0]) #Paikka-akseli x (m).
+
+#Luodaan ohjelma, joka laskee raketin vauhtia kuuhun.
+#Minimivauhti, jonka raketti tarvitsee päästäkseen kuuhun, saadaan selville syöttämällä eri raketin ralkunopeusarvoja v ohjelmaan. 
+#Jos ohjelmaan syötetty raketin alkunopeus v on liian pieni, raketti ei pääse kuuhun ja kääntyy takaisin (negatiivinen nopeus).
+
+#Eli etsitään pienin arvo raketin alkunopeudelle, jolla raketti pääsee kuuhun eli ei käänny takaisin).
+
+while True:
+    dv = (-G*M_maa/(R+x)**2)+(G*M_kuu/(y-x)**2)*dt #Raketin nopeus.
+    v = v+dv #Raketin uusi nopeus.
+    v_k = v+dv/2 #Raketin keskinopeus.
+    x = x+v_k*dt #Raketin paikka.
+    t_l=t_l+dt #Raketin lentoaika.
+    if t_l%1000==0: #tarkastellaan raketin paikka 1000 sekunnin välein.
+        tt = np.append(tt, t_l)
+        xt = np.append(xt, x)
+    if x > y:
+        break
+    if v < 0:
+        break
+
+#Muutetaan saatu raketin lentoaika tunneiksi.
+
+t_h = float(t_l/3600) #lentoaika tunteina
+
+print("Raketin alkunopeus on", v,"m/s.")
+print("Raketin paikka on",x,"m.")
+print("Raketin loppunopeus on",v,"m/s.")
+print("Raketin lentoaika on",t_h,"h.")
+
+#Monen syöttöyrityksen jälkeen saadaan raketin minimialkunopeudeksi v = 10994 m/s.
+
+
+
+
+
+#2.
+
+#Tarkastellaan nyt tilannetta, jossa raketin alkunopeus kuuhun on 10% minimivauhtia suurempi.
+
+#Luodaan koordinaattiakselit:
+
+tt0 = np.array([0]) #Aika-akseli t (h)
+xt0 = np.array([0]) #Paikka-akseli x (m)
+
+#Tunnetut muuttujat alkutilanteessa ovat seuraavat:
+
+G = 6.67384*10**(-11) #Gravitaatiovakio.
+M_maa = 5.9737*10**24 #Maan massa.
+M_kuu = 7.342*10**22 #Kuun massa.
+R = (6371*10**3)+(100*10**3) #Raketin etäisyys maasta.
+y = (384300*10**3) #Raketin etäisyys kuusta.
+dt0 = 1 #Aikaväli sekuntteina, jota halutaan tarkastella.
+x0 = 0 #Raketin alkupaikka.
+t_l0 = 0 #Raketin lentoaika.
+v0 = 1.1*v #10% minimivauhtia suurempi raketin alkunopeus.
+
+while True:
+    dv0=(-G*M_maa/(R+x0)**2)+(G*M_kuu/(y-x0)**2)*dt0 #Raketin nopeus.
+    v_k0=v0+dv0/2 #Raketin keskinopeus.
+    v0=v0+dv0 #Raketin uusi nopeus.
+    x0=x0+v_k0*dt0 #Raketin paikka.
+    t_l0=t_l0+dt0 #Raketin lentoaika.
+    if t_l0%1000==0: #tarkastellaan raketin paikka 1000 sekunnin välein.
+        tt0 = np.append(tt0, t_l0)
+        xt0 = np.append(xt0, x0)
+    if x0 > y:
+        break
+    if v0 < 0:
+        break
+
+#Muutetaan saatu raketin lentoaika tunneiksi:
+
+t_h0 = float(t_l0/3600)
+
+print("10% raketin minimivauhtia suurempi alkunopeus on",v0,"m/s.")
+print("Raketin lentoaika, kun raketin alkuvauti on 10% raketin minimivauhtia suurempi, on",t_h0,"h")
+
+plt.plot(tt,xt)
+plt.plot(tt0,xt0)
+
+plt.title('Raketin matka lentoajan funktiona v(t)')
+
+plt.plot(tt,xt,'k',label='v(t), raketin minimivauhdin alkunopeus')
+plt.legend()
+
+plt.plot(tt0,xt0,'r',label='1.1*v(t), 10% raketin minimivauhtia suurempi alkunopeus')
+plt.legend()
+
+plt.show()
