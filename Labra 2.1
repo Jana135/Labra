@@ -12,6 +12,7 @@ dt = 1 #Aikaväli sekuntteina, jota halutaan tarkastella.
 x = 0 #Raketin alkupaikka.
 t_l = 0 #Raketin lentoaika.
 v = int(input("Syötä raketille alkunopeus v (m/s): ")) #Raketin alkunopeus, jota halutaan tarkastella.
+v_a = v #Raketille syötetty alkunopeus
 
 #Newtonin II lain mukaan ∑F = ma = m*dv/dt, josta dv = F/m*dt.
 #∑F = (-G*M_maa/(R+x)**2) + (G*M_kuu)/(y-x)**2). 
@@ -50,12 +51,14 @@ while True:
 
 t_h = float(t_l/3600) #lentoaika tunteina
 
-print("Raketin alkunopeus on", v,"m/s.")
+print("Raketin alkunopeus on", v_a,"m/s.")
 print("Raketin paikka on",x,"m.")
 print("Raketin loppunopeus on",v,"m/s.")
 print("Raketin lentoaika on",t_h,"h.")
 
 #Monen syöttöyrityksen jälkeen saadaan raketin minimialkunopeudeksi v = 10994 m/s.
+
+
 
 
 
@@ -78,7 +81,7 @@ y = (384300*10**3) #Raketin etäisyys kuusta.
 dt0 = 1 #Aikaväli sekuntteina, jota halutaan tarkastella.
 x0 = 0 #Raketin alkupaikka.
 t_l0 = 0 #Raketin lentoaika.
-v0 = 1.1*v #10% minimivauhtia suurempi raketin alkunopeus.
+v0 = 1.1*v_a #10% minimivauhtia suurempi raketin alkunopeus.
 
 while True:
     dv0=(-G*M_maa/(R+x0)**2)+(G*M_kuu/(y-x0)**2)*dt0 #Raketin nopeus.
