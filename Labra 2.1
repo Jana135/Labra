@@ -78,34 +78,35 @@ M_maa = 5.9737*10**24 #Maan massa.
 M_kuu = 7.342*10**22 #Kuun massa.
 R = (6371*10**3)+(100*10**3) #Raketin etäisyys maasta.
 y = (384300*10**3) #Raketin etäisyys kuusta.
-dt0 = 1 #Aikaväli sekuntteina, jota halutaan tarkastella.
-x0 = 0 #Raketin alkupaikka.
+dt_0 = 1 #Aikaväli sekuntteina, jota halutaan tarkastella.
+x_0 = 0 #Raketin alkupaikka.
 t_l0 = 0 #Raketin lentoaika.
-v0 = 1.1*v_a #10% minimivauhtia suurempi raketin alkunopeus.
+v_0 = 1.1*v_a #10% minimivauhtia suurempi raketin alkunopeus.
+v_a0 = v_0 #Raketin alkunopeus
 
 while True:
-    dv0=(-G*M_maa/(R+x0)**2)+(G*M_kuu/(y-x0)**2)*dt0 #Raketin nopeus.
-    v_k0=v0+dv0/2 #Raketin keskinopeus.
-    v0=v0+dv0 #Raketin uusi nopeus.
-    x0=x0+v_k0*dt0 #Raketin paikka.
-    t_l0=t_l0+dt0 #Raketin lentoaika.
+    dv_0=(-G*M_maa/(R+x_0)**2)+(G*M_kuu/(y-x_0)**2)*dt_0 #Raketin nopeus.
+    v_k0=v_0+dv_0/2 #Raketin keskinopeus.
+    v_0=v_0+dv_0 #Raketin uusi nopeus.
+    x_0=x_0+v_k0*dt_0 #Raketin paikka.
+    t_l0=t_l0+dt_0 #Raketin lentoaika.
     if t_l0%1000==0: #tarkastellaan raketin paikka 1000 sekunnin välein.
-        tt0 = np.append(tt0, t_l0)
-        xt0 = np.append(xt0, x0)
-    if x0 > y:
+        tt_0 = np.append(tt0, t_l0)
+        xt_0 = np.append(xt0, x0)
+    if x_0 > y:
         break
-    if v0 < 0:
+    if v_0 < 0:
         break
 
 #Muutetaan saatu raketin lentoaika tunneiksi:
 
 t_h0 = float(t_l0/3600)
 
-print("10% raketin minimivauhtia suurempi alkunopeus on",v0,"m/s.")
+print("10% raketin minimivauhtia suurempi alkunopeus on",v_a0,"m/s.")
 print("Raketin lentoaika, kun raketin alkuvauti on 10% raketin minimivauhtia suurempi, on",t_h0,"h")
 
 plt.plot(tt,xt)
-plt.plot(tt0,xt0)
+plt.plot(tt_0,xt_0)
 
 plt.title('Raketin matka lentoajan funktiona v(t)')
 
@@ -114,5 +115,3 @@ plt.legend()
 
 plt.plot(tt0,xt0,'r',label='1.1*v(t), 10% raketin minimivauhtia suurempi alkunopeus')
 plt.legend()
-
-plt.show()
