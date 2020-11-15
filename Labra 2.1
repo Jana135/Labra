@@ -34,7 +34,7 @@ xt = np.array([0]) #Paikka-akseli x (m).
 #Eli etsitään pienin arvo raketin alkunopeudelle, jolla raketti pääsee kuuhun eli ei käänny takaisin).
 
 while True:
-    dv = (-G*M_maa/(R+x)**2)+(G*M_kuu/(y-x)**2)*dt #Raketin nopeus.
+    dv = ((-G*M_maa/(R+x)**2)+(G*M_kuu/(y-x)**2))*dt #Raketin nopeus.
     v = v+dv #Raketin uusi nopeus.
     v_k = v+dv/2 #Raketin keskinopeus.
     x = x+v_k*dt #Raketin paikka.
@@ -68,8 +68,8 @@ print("Raketin lentoaika on",t_h,"h.")
 
 #Luodaan koordinaattiakselit:
 
-tt0 = np.array([0]) #Aika-akseli t (h)
-xt0 = np.array([0]) #Paikka-akseli x (m)
+tt_0 = np.array([0]) #Aika-akseli t (h)
+xt_0 = np.array([0]) #Paikka-akseli x (m)
 
 #Tunnetut muuttujat alkutilanteessa ovat seuraavat:
 
@@ -85,14 +85,14 @@ v_0 = 1.1*v_a #10% minimivauhtia suurempi raketin alkunopeus.
 v_a0 = v_0 #Raketin alkunopeus
 
 while True:
-    dv_0=(-G*M_maa/(R+x_0)**2)+(G*M_kuu/(y-x_0)**2)*dt_0 #Raketin nopeus.
+    dv_0=((-G*M_maa/(R+x_0)**2)+(G*M_kuu/(y-x_0)**2))*dt_0 #Raketin nopeus.
     v_k0=v_0+dv_0/2 #Raketin keskinopeus.
     v_0=v_0+dv_0 #Raketin uusi nopeus.
     x_0=x_0+v_k0*dt_0 #Raketin paikka.
     t_l0=t_l0+dt_0 #Raketin lentoaika.
     if t_l0%1000==0: #tarkastellaan raketin paikka 1000 sekunnin välein.
-        tt_0 = np.append(tt0, t_l0)
-        xt_0 = np.append(xt0, x0)
+        tt_0 = np.append(tt_0, t_l0)
+        xt_0 = np.append(xt_0, x_0)
     if x_0 > y:
         break
     if v_0 < 0:
@@ -115,3 +115,5 @@ plt.legend()
 
 plt.plot(tt0,xt0,'r',label='1.1*v(t), 10% raketin minimivauhtia suurempi alkunopeus')
 plt.legend()
+
+plt.show()
